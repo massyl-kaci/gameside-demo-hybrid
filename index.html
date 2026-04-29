@@ -280,12 +280,10 @@
   #gamebot-bubble:hover { transform: scale(1.06); }
 </style>
 
-<!-- Hybrid mode: every "Réserver" CTA opens the custom Smeetz SDK booking flow.
-     GitHub Pages refuses iframe embedding (X-Frame-Options: DENY), so we open in a new tab.
-     Override _smtz so the existing onclick handlers redirect to the SDK URL. -->
+<!-- Hybrid mode: every "Réserver" CTA opens the custom Smeetz SDK booking flow as a true lightbox.
+     The SDK iframe is pre-loaded on page load so it renders instantly when the user clicks. -->
 <script>
-  window.SDK_URL = 'https://massyl-kaci.github.io/gameside-demo-sdk/';
-  window._smtz = function() { window.open(window.SDK_URL, '_blank', 'noopener'); };
+  window._smtz = function() { window.openSDKLightbox && window.openSDKLightbox(); };
 </script>
 
 </head>
@@ -483,28 +481,35 @@
   }, 2500);
 </script>
 
-<!-- ===== SDK Booking Flow Lightbox (replaces the Smeetz standard widget) ===== -->
-<div id="sdk-lightbox-overlay" style="display:none; position:fixed; inset:0; background:rgba(31,34,64,0.92); z-index:20000; backdrop-filter:blur(6px); animation:sdkFadeIn 0.25s ease-out;" onclick="if(event.target===this) closeSDKLightbox();">
+<!-- ===== SDK Booking Flow Lightbox (replaces the Smeetz standard widget) =====
+     The iframe pre-loads on page load (visibility:hidden, so it renders without being shown).
+     On click, we just flip visibility — the SDK is already bootstrapped and renders instantly. -->
+<div id="sdk-lightbox-overlay"
+     style="visibility:hidden; opacity:0; pointer-events:none; position:fixed; inset:0; background:rgba(31,34,64,0.92); z-index:20000; backdrop-filter:blur(6px); transition:opacity 0.25s ease-out;"
+     onclick="if(event.target===this) closeSDKLightbox();">
   <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(1000px,96vw); height:min(94vh,920px); background:#FFFFFF; border-radius:16px; overflow:hidden; box-shadow:0 32px 96px rgba(0,0,0,0.55);">
     <button onclick="closeSDKLightbox()" aria-label="Fermer la réservation" style="position:absolute; top:14px; right:14px; width:38px; height:38px; border-radius:50%; border:none; background:#FFCC33; color:#2A2D48; font-size:22px; font-weight:bold; cursor:pointer; z-index:2; box-shadow:0 4px 12px rgba(0,0,0,0.25);">&times;</button>
-    <iframe id="sdk-lightbox-iframe" src="" title="Réservation Gameside Saleilles" style="width:100%; height:100%; border:none; display:block;" allow="clipboard-write"></iframe>
+    <iframe id="sdk-lightbox-iframe"
+            src="https://massyl-kaci.github.io/gameside-demo-sdk/"
+            title="Réservation Gameside Saleilles"
+            loading="eager"
+            allow="clipboard-write"
+            style="width:100%; height:100%; border:none; display:block;"></iframe>
   </div>
 </div>
-<style>
-  @keyframes sdkFadeIn { from { opacity: 0; } to { opacity: 1; } }
-</style>
 <script>
   function openSDKLightbox() {
     var overlay = document.getElementById('sdk-lightbox-overlay');
-    var iframe = document.getElementById('sdk-lightbox-iframe');
-    if (!iframe.src) {
-      iframe.src = 'https://massyl-kaci.github.io/gameside-demo-sdk/';
-    }
-    overlay.style.display = 'block';
+    overlay.style.visibility = 'visible';
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'auto';
     document.body.style.overflow = 'hidden';
   }
   function closeSDKLightbox() {
-    document.getElementById('sdk-lightbox-overlay').style.display = 'none';
+    var overlay = document.getElementById('sdk-lightbox-overlay');
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    setTimeout(function() { overlay.style.visibility = 'hidden'; }, 250);
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', function(e) {
