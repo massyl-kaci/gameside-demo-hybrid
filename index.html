@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Demo site — internal use only">
+<title>Gameside Saleilles — eAt dRink hAve fun!</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --gs-red: #FFCC33;     /* var name kept for backward-compat, value now Gameside gold */
+    --gs-black: #2A2D48;   /* now Gameside navy */
+    --gs-white: #FFFFFF;
+    --gs-gray: #1F2240;    /* slightly lighter navy for cards/sections */
+    --gs-mid: #353a5e;     /* mid-navy for borders */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--gs-white);
+    background: var(--gs-black);
+    line-height: 1.6;
+  }
+  h1, h2, h3, .display {
+    font-family: 'Archivo Black', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* --- Header --- */
+  header {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(31, 34, 64, 0.95);
+    border-bottom: 2px solid var(--gs-red);
+    padding: 16px 32px;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(8px);
+  }
+  .logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    color: var(--gs-white);
+    letter-spacing: 0.06em;
+  }
+  .logo span { color: var(--gs-red); }
+
+  nav ul {
+    display: flex; gap: 28px;
+    list-style: none; align-items: center;
+  }
+  nav a:not(.cta-button) {
+    color: var(--gs-white);
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+  nav a:not(.cta-button):hover { color: var(--gs-red); }
+
+  /* --- CTA buttons (matching Smeetz widget style) --- */
+  .cta-button {
+    display: inline-block;
+    color: var(--gs-black);          /* navy text on gold — matches BO widget Customization (color: #2A2D48; background: #FFCC33) */
+    background: var(--gs-red);       /* gold */
+    border: 1px solid var(--gs-red);
+    padding: 14px 24px;
+    border-radius: 4px;
+    font-family: 'Helvetica', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    line-height: 1.2;
+  }
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 204, 51, 0.45);
+  }
+  .cta-button.large {
+    padding: 18px 32px;
+    font-size: 15px;
+  }
+
+  /* --- Hero --- */
+  .hero {
+    min-height: 90vh;
+    background:
+      linear-gradient(135deg, rgba(31,34,64,0.85), rgba(255,204,51,0.25)),
+      url('https://perpignan.gameside.fr/content/uploads/timber-images/2025/03/background-action-game-576x384-c-default.jpg') center/cover;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 100px 32px 64px;
+  }
+  .hero-content { max-width: 900px; }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    margin-bottom: 16px;
+  }
+  .hero .tagline {
+    font-family: 'Archivo Black', sans-serif;
+    color: var(--gs-red);
+    font-size: clamp(20px, 2.4vw, 28px);
+    margin-bottom: 24px;
+    text-transform: lowercase;
+    letter-spacing: 0;
+  }
+  .hero p.lead {
+    font-size: clamp(16px, 1.4vw, 18px);
+    margin-bottom: 32px;
+    max-width: 620px;
+    margin-left: auto; margin-right: auto;
+    color: #f0f0f0;
+  }
+
+  /* --- Sections --- */
+  section { padding: 96px 32px; }
+  .section-subtitle {
+    text-align: center;
+    color: var(--gs-red);
+    font-family: 'Archivo Black', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    text-align: center;
+    margin-bottom: 56px;
+    font-size: clamp(32px, 4vw, 48px);
+  }
+
+  /* --- Activities grid --- */
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .activity-card {
+    background: var(--gs-gray);
+    border: 1px solid var(--gs-mid);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .activity-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--gs-red);
+    box-shadow: 0 12px 32px rgba(255, 204, 51, 0.2);
+  }
+  .activity-card-image {
+    width: 100%; height: 220px; object-fit: cover;
+    border-bottom: 2px solid var(--gs-mid);
+  }
+  .activity-card-body {
+    padding: 28px;
+    display: flex; flex-direction: column;
+    flex: 1;
+  }
+  .activity-card h3 {
+    color: var(--gs-white);
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  .activity-card .price {
+    color: var(--gs-red);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    margin-bottom: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .activity-card p.desc {
+    color: #cccccc;
+    font-size: 15px;
+    margin-bottom: 24px;
+    flex: 1;
+  }
+  .activity-card .activity-cta { align-self: flex-start; margin-top: auto; }
+
+  /* --- SiDeBAR --- */
+  .sidebar-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 1240px;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .sidebar-image {
+    width: 100%; height: 480px;
+    border-radius: 8px;
+    background:
+      linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
+      url('https://perpignan.gameside.fr/content/uploads/timber-images/gameside-theme/home/sidebar/sidebar_home.1124a7db-520x693-c-default.jpeg') center/cover;
+    border: 1px solid var(--gs-mid);
+  }
+  .sidebar-text h3 {
+    color: var(--gs-red);
+    font-size: clamp(28px, 3vw, 38px);
+    margin-bottom: 20px;
+  }
+  .sidebar-text p { color: #cccccc; font-size: 16px; line-height: 1.8; margin-bottom: 16px; }
+  .sidebar-text .menu-list { color: #999; font-size: 14px; margin-top: 24px; }
+
+  /* --- Info pratiques --- */
+  .info-pratiques {
+    background: var(--gs-gray);
+    text-align: center;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .info-card { padding: 24px; }
+  .info-card h4 {
+    color: var(--gs-red);
+    font-family: 'Archivo Black', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .info-card p { color: #cccccc; font-size: 15px; line-height: 1.8; }
+
+  /* --- Footer --- */
+  footer {
+    background: #1A1D38;
+    padding: 40px 32px;
+    text-align: center;
+    border-top: 1px solid var(--gs-mid);
+  }
+  footer .logo { font-size: 24px; }
+  footer .demo-note { color: #666; font-size: 12px; margin-top: 16px; }
+
+  /* --- Mobile --- */
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    .sidebar-block { grid-template-columns: 1fr; }
+    .sidebar-image { height: 320px; }
+    section { padding: 64px 20px; }
+    header { padding: 12px 20px; }
+  }
+
+  /* --- Gamebot chatbot styles --- */
+  #gamebot-callout {
+    position: fixed; bottom: 90px; right: 20px; z-index: 10001;
+    background: #fff; color: #1a1a1a; padding: 12px 18px; border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25); font-size: 14px;
+    max-width: 240px; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-weight: 500;
+    animation: gbFadeIn 0.3s ease;
+  }
+  #gamebot-callout .gb-close {
+    position: absolute; top: -7px; right: -7px; width: 20px; height: 20px;
+    background: #aaa; color: #fff; border-radius: 50%; font-size: 12px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    line-height: 1;
+  }
+  @keyframes gbFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  #gamebot-bubble { transition: transform 0.2s; }
+  #gamebot-bubble:hover { transform: scale(1.06); }
+</style>
+
+<!-- Hybrid mode: every "Réserver" CTA opens the custom Smeetz SDK booking flow as a full lightbox.
+     Override _smtz so the existing onclick handlers (which call _smtz('openwidget', ...)) redirect to openSDKLightbox(). -->
+<script>
+  window._smtz = function() { window.openSDKLightbox && window.openSDKLightbox(); };
+</script>
+
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header>
+  <a href="#" class="logo">GAME<span>SIDE</span></a>
+  <nav>
+    <ul>
+      <li><a href="#activites">Activités</a></li>
+      <li><a href="#sidebar-section">SiDeBAR</a></li>
+      <li><a href="#privatisation">Anniversaires & EVG</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li>
+        <a href="#" class="cta-button"
+           onclick="event.preventDefault(); _smtz('openwidget', 1 * new Date(), {
+             productId: '75799', lightbox: true, listView: false,
+             gId: '19903', wId: '5249',
+             codes: '1H4VQMY1', cats: '154052', lang: 'fr',
+             linkText: 'en: ,,, fr: ,,, de: ,,, it: ',
+             linkUrl: 'en: ,,, fr: ,,, de: ,,, it: ',
+           });">Réserver</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Un complexe,<br>six expériences.</h1>
+    <p class="tagline">eAt dRink hAve fun!</p>
+    <p class="lead">Action Game signature, 3 salles d'Escape Game, Virtual Room, Quiz, Karaoké et Blindtest. Et la SiDeBAR pour conclure la soirée. 600 m² au cœur de Saleilles, à 5 min de Perpignan.</p>
+    <a href="#" class="cta-button large"
+       onclick="event.preventDefault(); _smtz('openwidget', 1 * new Date(), {
+         productId: '75799', lightbox: true, listView: false,
+         gId: '19903', wId: '5249',
+         codes: '1H4VQMY1', cats: '154052', lang: 'fr',
+         linkText: 'en: ,,, fr: ,,, de: ,,, it: ',
+         linkUrl: 'en: ,,, fr: ,,, de: ,,, it: ',
+       });">Réserver l'Action Game</a>
+  </div>
+</section>
+
+<!-- ===== Activities ===== -->
+<section id="activites">
+  <p class="section-subtitle">Les activités</p>
+  <h2 class="section-title">Choisissez votre terrain de jeu</h2>
+
+  <div class="activities-grid">
+
+    <!-- Action Game -->
+    <article class="activity-card">
+      <img class="activity-card-image"
+           src="https://perpignan.gameside.fr/content/uploads/timber-images/gameside-theme/activities/gameside-activities-action.5169078b-520x260-c-default.png"
+           alt="Action Game Saleilles — 19 défis sur 600 m²">
+      <div class="activity-card-body">
+        <h3>Action Game</h3>
+        <p class="price">25 € · 60 min · 2-5 par équipe</p>
+        <p class="desc">La signature Gameside : 19 challenges enchaînés sur 600 m². Tir, agilité, coopération — jusqu'à 15 équipes en simultané. Code <strong>ETUDIANT19</strong> = tarif 19 €/pers pour les étudiants.</p>
+        <a href="#" class="cta-button activity-cta"
+           onclick="event.preventDefault(); _smtz('openwidget', 1 * new Date(), {
+             productId: '75799', lightbox: true, listView: false,
+             gId: '19903', wId: '5249',
+             codes: '1H4VQMY1', cats: '154052', lang: 'fr',
+             linkText: 'en: ,,, fr: ,,, de: ,,, it: ',
+             linkUrl: 'en: ,,, fr: ,,, de: ,,, it: ',
+           });">Réserver l'Action Game</a>
+      </div>
+    </article>
+
+    <!-- Escape Game -->
+    <article class="activity-card">
+      <img class="activity-card-image"
+           src="https://perpignan.gameside.fr/content/uploads/timber-images/gameside-theme/activities/gameside-activities-escape.5a61f01a-520x260-c-default.png"
+           alt="Escape Game Saleilles — 3 salles thématiques">
+      <div class="activity-card-body">
+        <h3>Escape Game</h3>
+        <p class="price">À partir de 20 € · 60 min · 2-8 joueurs</p>
+        <p class="desc">Trois salles, trois ambiances : Jungle Quest (familiale), Mystère à Lived Street (13+, immersive), La Malédiction de Morgane (PMR, surnaturel). Une des meilleures enseignes au monde.</p>
+        <a href="#" class="cta-button activity-cta"
+           onclick="event.preventDefault(); _smtz('openwidget', 1 * new Date(), {
+             productId: '75800', lightbox: true, listView: false,
+             gId: '19903', wId: '5250',
+             codes: 'WQFALK1Y,4RWKH54Y,9RK6HBZ9', cats: '154056,154058,154062', lang: 'fr',
+             linkText: 'en: ,,, fr: ,,, de: ,,, it: ',
+             linkUrl: 'en: ,,, fr: ,,, de: ,,, it: ',
+           });">Choisir une salle d'Escape</a>
+      </div>
+    </article>
+
+    <!-- Privatisation & Anniversaires -->
+    <article class="activity-card" id="privatisation">
+      <img class="activity-card-image"
+           src="https://perpignan.gameside.fr/content/uploads/timber-images/gameside-theme/home/Anniversaires_Enfants.e2f77eb8-520x260-c-default.png"
+           alt="Privatisation, Anniversaires, EVG/EVJF, Séminaires">
+      <div class="activity-card-body">
+        <h3>Privatisation & Anniversaires</h3>
+        <p class="price">Anniversaires · EVG/EVJF · Séminaires</p>
+        <p class="desc">Privatisez l'arène Action Game pour votre groupe (6-30 pers). Acompte 30 % à la réservation, solde à J-7 ou sur place. Cocktails, tapas et fondues SiDeBAR sur demande.</p>
+        <a href="#" class="cta-button activity-cta"
+           onclick="event.preventDefault(); _smtz('openwidget', 1 * new Date(), {
+             productId: '75801', lightbox: true, listView: false,
+             gId: '19903', wId: '5251',
+             codes: '8ZFBF9TJ,2JBVYLRF', cats: '154063,154064',
+             linkText: 'en: ,,, fr: ,,, de: ,,, it: ',
+             linkUrl: 'en: ,,, fr: ,,, de: ,,, it: ',
+           });">Privatiser & devis groupe</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ===== SiDeBAR ===== -->
+<section id="sidebar-section">
+  <p class="section-subtitle">Bar & Restaurant</p>
+  <h2 class="section-title">SiDeBAR</h2>
+  <div class="sidebar-block">
+    <div class="sidebar-image"></div>
+    <div class="sidebar-text">
+      <h3>Avant. Pendant. Après.</h3>
+      <p>Notre bar-restaurant intégré au complexe : cocktails maison signature, plateaux tapas à partager, en-cas et softs. Darts, pétanque indoor, shuffleboard, arcade.</p>
+      <p>L'endroit pour se retrouver entre amis avant l'Action Game ou conclure une soirée Escape Room.</p>
+      <p class="menu-list">Cocktails dès 12 € · Plateaux tapas dès 15 € · Boissons softs 4 €</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Infos pratiques ===== -->
+<section id="contact" class="info-pratiques">
+  <p class="section-subtitle">Infos pratiques</p>
+  <h2 class="section-title">Venez nous voir</h2>
+  <div class="info-grid">
+    <div class="info-card">
+      <h4>Adresse</h4>
+      <p>7 rue de Cerdagne<br>66280 Saleilles<br>(à 5 min de Perpignan)</p>
+    </div>
+    <div class="info-card">
+      <h4>Horaires</h4>
+      <p>Mer / Jeu / Ven : 18h-01h<br>Samedi : 14h-01h<br>Dimanche : 14h-19h<br>Fermé Lun & Mar</p>
+    </div>
+    <div class="info-card">
+      <h4>Contact</h4>
+      <p>04 11 81 50 55<br><br>perpignan.gameside.fr</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <p class="logo">GAME<span>SIDE</span></p>
+  <p style="margin-top:8px; color:#999; font-family:'Archivo Black',sans-serif; text-transform:lowercase;">eAt dRink hAve fun!</p>
+  <p class="demo-note">Demo site for sales enablement — Powered by Smeetz</p>
+</footer>
+
+<!-- ===== Smeetz Atlas Chatbot (Gamebot) ===== -->
+<div id="gamebot-callout" style="display:none;" onclick="toggleGamebot()">
+  <span class="gb-close" onclick="event.stopPropagation();document.getElementById('gamebot-callout').style.display='none';">&times;</span>
+  Besoin d'aide pour votre visite&nbsp;?
+</div>
+
+<div id="gamebot-bubble" onclick="toggleGamebot()"
+     style="position:fixed; bottom:20px; right:20px; width:60px; height:60px;
+            border-radius:50%; background:#FFCC33; cursor:pointer; z-index:10000;
+            display:flex; align-items:center; justify-content:center;
+            box-shadow:0 6px 18px rgba(0,0,0,0.4);">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2A2D48"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+</div>
+
+<div id="gamebot-window" style="display:none; position:fixed; bottom:90px; right:20px;
+     width:400px; height:600px; max-height:80vh; max-width:calc(100vw - 40px); z-index:9999;
+     border-radius:16px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,0.4);">
+  <iframe src="https://chatbot.smeetz.com/?wId=69f0c9b263609841254a18c8&lang=fr"
+          width="100%" height="100%"
+          style="border:none;"
+          allow="microphone"></iframe>
+</div>
+
+<script>
+  function toggleGamebot() {
+    var w = document.getElementById('gamebot-window');
+    var c = document.getElementById('gamebot-callout');
+    c.style.display = 'none';
+    w.style.display = w.style.display === 'none' ? 'block' : 'none';
+  }
+  setTimeout(function() {
+    if (document.getElementById('gamebot-window').style.display === 'none') {
+      document.getElementById('gamebot-callout').style.display = 'block';
+    }
+  }, 2500);
+</script>
+
+<!-- ===== SDK Booking Flow Lightbox (replaces the Smeetz standard widget) ===== -->
+<div id="sdk-lightbox-overlay" style="display:none; position:fixed; inset:0; background:rgba(31,34,64,0.92); z-index:20000; backdrop-filter:blur(6px); animation:sdkFadeIn 0.25s ease-out;" onclick="if(event.target===this) closeSDKLightbox();">
+  <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(1000px,96vw); height:min(94vh,920px); background:#FFFFFF; border-radius:16px; overflow:hidden; box-shadow:0 32px 96px rgba(0,0,0,0.55);">
+    <button onclick="closeSDKLightbox()" aria-label="Fermer la réservation" style="position:absolute; top:14px; right:14px; width:38px; height:38px; border-radius:50%; border:none; background:#FFCC33; color:#2A2D48; font-size:22px; font-weight:bold; cursor:pointer; z-index:2; box-shadow:0 4px 12px rgba(0,0,0,0.25);">&times;</button>
+    <iframe id="sdk-lightbox-iframe" src="" title="Réservation Gameside Saleilles" style="width:100%; height:100%; border:none; display:block;" allow="clipboard-write"></iframe>
+  </div>
+</div>
+<style>
+  @keyframes sdkFadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+<script>
+  function openSDKLightbox() {
+    var overlay = document.getElementById('sdk-lightbox-overlay');
+    var iframe = document.getElementById('sdk-lightbox-iframe');
+    if (!iframe.src) {
+      iframe.src = 'https://massyl-kaci.github.io/gameside-demo-sdk/';
+    }
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSDKLightbox() {
+    document.getElementById('sdk-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSDKLightbox();
+  });
+</script>
+
+</body>
+</html>
