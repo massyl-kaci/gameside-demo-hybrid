@@ -280,10 +280,12 @@
   #gamebot-bubble:hover { transform: scale(1.06); }
 </style>
 
-<!-- Hybrid mode: every "Réserver" CTA opens the custom Smeetz SDK booking flow as a full lightbox.
-     Override _smtz so the existing onclick handlers (which call _smtz('openwidget', ...)) redirect to openSDKLightbox(). -->
+<!-- Hybrid mode: every "Réserver" CTA opens the custom Smeetz SDK booking flow.
+     GitHub Pages refuses iframe embedding (X-Frame-Options: DENY), so we open in a new tab.
+     Override _smtz so the existing onclick handlers redirect to the SDK URL. -->
 <script>
-  window._smtz = function() { window.openSDKLightbox && window.openSDKLightbox(); };
+  window.SDK_URL = 'https://massyl-kaci.github.io/gameside-demo-sdk/';
+  window._smtz = function() { window.open(window.SDK_URL, '_blank', 'noopener'); };
 </script>
 
 </head>
